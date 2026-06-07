@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}FixMyArea | Civic Issue Tracker{% endblock %}
+{% block content %}
+<section class="hero">
+    <div class="hero-copy">
+        <span class="eyebrow">SDG 11 Civic Reporting Platform</span>
+        <h1>FixMyArea</h1>
+        <p>Report potholes, garbage accumulation, water leakage, broken streetlights, drainage issues, and other civic complaints. Track progress from submission to resolution with a clear public-service workflow.</p>
+        <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-primary btn-lg" href="{{ url_for('auth.register') }}"><i class="bi bi-person-plus"></i> Create Account</a>
+            <a class="btn btn-outline-primary btn-lg" href="{{ url_for('auth.login') }}"><i class="bi bi-box-arrow-in-right"></i> Login</a>
+        </div>
+    </div>
+</section>
+<section class="feature-grid">
+    <div><i class="bi bi-camera"></i><h3>Image Evidence</h3><p>Upload photos with every complaint.</p></div>
+    <div><i class="bi bi-funnel"></i><h3>Smart Filters</h3><p>Filter by status, category, date, priority, and location.</p></div>
+    <div><i class="bi bi-activity"></i><h3>Live Progress</h3><p>Follow every update in a timestamped timeline.</p></div>
+</section>
+{% endblock %}

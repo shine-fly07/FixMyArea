@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard | FixMyArea{% endblock %}
+{% block content %}
+<div class="page-title"><div><h1>Admin Dashboard</h1><p>City-wide complaint analytics and operational status.</p></div></div>
+<div class="stats-grid six">
+    <div class="stat-card"><span>Total Complaints</span><strong>{{ cards.total }}</strong></div>
+    <div class="stat-card"><span>Pending</span><strong>{{ cards.pending }}</strong></div>
+    <div class="stat-card"><span>In Progress</span><strong>{{ cards.progress }}</strong></div>
+    <div class="stat-card"><span>Resolved</span><strong>{{ cards.resolved }}</strong></div>
+    <div class="stat-card"><span>Registered Users</span><strong>{{ cards.users }}</strong></div>
+    <div class="stat-card"><span>Critical</span><strong>{{ cards.critical }}</strong></div>
+</div>
+<div class="chart-grid mt-4">
+    <div class="panel"><h2>Complaint Categories</h2><canvas id="categoryChart" data-chart='{{ charts.categories|tojson }}'></canvas></div>
+    <div class="panel"><h2>Complaints by Status</h2><canvas id="statusChart" data-chart='{{ charts.statuses|tojson }}'></canvas></div>
+    <div class="panel wide"><h2>Reported Over Time</h2><canvas id="reportedChart" data-chart='{{ charts.reported|tojson }}'></canvas></div>
+    <div class="panel"><h2>Priority Distribution</h2><canvas id="priorityChart" data-chart='{{ charts.priorities|tojson }}'></canvas></div>
+    <div class="panel"><h2>Resolution Rate</h2><canvas id="resolutionChart" data-chart='{{ charts.resolution|tojson }}'></canvas></div>
+</div>
+<div class="panel mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3"><h2>Recent Complaints</h2><a href="{{ url_for('admin.complaints') }}">Manage all</a></div>
+    {% include "partials/complaint_table.html" %}
+</div>
+{% endblock %}

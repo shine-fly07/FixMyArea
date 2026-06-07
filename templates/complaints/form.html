@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit' if complaint else 'Report' }} Complaint | FixMyArea{% endblock %}
+{% block content %}
+<div class="page-title">
+    <div><h1>{{ 'Edit Complaint' if complaint else 'Report Civic Issue' }}</h1><p>Provide clear details so the issue can be routed quickly.</p></div>
+</div>
+<div class="panel">
+    <form method="post" enctype="multipart/form-data" class="row g-3">
+        <div class="col-md-8">
+            <label class="form-label">Title</label>
+            <input class="form-control" name="title" value="{{ complaint.title if complaint else '' }}" required>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Category</label>
+            <select class="form-select" name="category" required>
+                <option value="">Choose category</option>
+                {% for category in categories %}
+                <option value="{{ category }}" {% if complaint and complaint.category == category %}selected{% endif %}>{{ category }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-12">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" name="description" rows="5" required>{{ complaint.description if complaint else '' }}</textarea>
+        </div>
+        <div class="col-md-8">
+            <label class="form-label">Location</label>
+            <input class="form-control" name="location" value="{{ complaint.location if complaint else '' }}" required>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Image Attachment</label>
+            <input class="form-control" type="file" name="image" accept="image/*" data-preview="#imagePreview">
+        </div>
+        <div class="col-12">
+            <img id="imagePreview" class="image-preview" alt="Complaint image preview"
+                 src="{% if complaint and complaint.image_path %}{{ url_for('complaints.uploaded_file', filename=complaint.image_path) }}{% endif %}">
+        </div>
+        <div class="col-12 d-flex gap-2">
+            <button class="btn btn-primary" type="submit">{{ 'Save Changes' if complaint else 'Submit Complaint' }}</button>
+            <a class="btn btn-outline-secondary" href="{{ url_for('complaints.list_complaints') }}">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

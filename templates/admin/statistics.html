@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Statistics | FixMyArea{% endblock %}
+{% block content %}
+<div class="page-title"><div><h1>Statistics</h1><p>Location trends, monthly complaint volume, and rejected report count.</p></div></div>
+<div class="row g-4">
+    <div class="col-lg-6"><div class="panel h-100"><h2>Top Locations</h2><table class="table"><thead><tr><th>Location</th><th>Total</th></tr></thead><tbody>{% for row in by_location %}<tr><td>{{ row.location }}</td><td>{{ row.total }}</td></tr>{% else %}<tr><td colspan="2" class="text-muted">No data yet.</td></tr>{% endfor %}</tbody></table></div></div>
+    <div class="col-lg-6"><div class="panel h-100"><h2>Monthly Reports</h2><table class="table"><thead><tr><th>Month</th><th>Total</th></tr></thead><tbody>{% for row in by_month %}<tr><td>{{ row.month }}</td><td>{{ row.total }}</td></tr>{% else %}<tr><td colspan="2" class="text-muted">No data yet.</td></tr>{% endfor %}</tbody></table><div class="metric-strip mt-3"><span>Rejected Complaints</span><strong>{{ rejected }}</strong></div></div></div>
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}FixMyArea{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="app-shell">
+    {% if session.get('user_id') %}
+    <aside class="sidebar">
+        <a class="brand" href="{{ url_for('main.index') }}"><i class="bi bi-buildings"></i><span>FixMyArea</span></a>
+        <nav class="nav flex-column">
+            {% if session.get('role') == 'admin' %}
+            <a class="nav-link" href="{{ url_for('admin.dashboard') }}"><i class="bi bi-speedometer2"></i>Dashboard</a>
+            <a class="nav-link" href="{{ url_for('admin.complaints') }}"><i class="bi bi-list-check"></i>Complaints</a>
+            <a class="nav-link" href="{{ url_for('admin.users') }}"><i class="bi bi-people"></i>Users</a>
+            <a class="nav-link" href="{{ url_for('admin.statistics') }}"><i class="bi bi-bar-chart"></i>Statistics</a>
+            {% else %}
+            <a class="nav-link" href="{{ url_for('main.dashboard') }}"><i class="bi bi-speedometer2"></i>Dashboard</a>
+            <a class="nav-link" href="{{ url_for('complaints.create') }}"><i class="bi bi-plus-circle"></i>Report Issue</a>
+            <a class="nav-link" href="{{ url_for('complaints.list_complaints') }}"><i class="bi bi-card-checklist"></i>My Complaints</a>
+            <a class="nav-link" href="{{ url_for('main.notifications') }}"><i class="bi bi-bell"></i>Notifications</a>
+            {% endif %}
+        </nav>
+    </aside>
+    {% endif %}
+    <main class="content {% if not session.get('user_id') %}public-content{% endif %}">
+        <nav class="topbar">
+            <div>
+                <button class="btn btn-sm btn-outline-secondary d-lg-none" id="sidebarToggle"><i class="bi bi-list"></i></button>
+                <span class="fw-semibold">Sustainable Cities and Communities</span>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-sm btn-outline-secondary icon-btn" id="darkModeToggle" title="Toggle dark mode"><i class="bi bi-moon-stars"></i></button>
+                {% if session.get('user_id') %}
+                {% if session.get('role') != 'admin' %}
+                <a class="btn btn-sm btn-outline-primary position-relative" href="{{ url_for('main.notifications') }}">
+                    <i class="bi bi-bell"></i>
+                    {% if unread_count %}
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ unread_count }}</span>
+                    {% endif %}
+                </a>
+                {% endif %}
+                <span class="small text-muted">{{ session.get('name') }}</span>
+                <a class="btn btn-sm btn-primary" href="{{ url_for('auth.logout') }}">Logout</a>
+                {% else %}
+                <a class="btn btn-sm btn-outline-primary" href="{{ url_for('auth.login') }}">Login</a>
+                <a class="btn btn-sm btn-primary" href="{{ url_for('auth.register') }}">Register</a>
+                {% endif %}
+            </div>
+        </nav>
+        <section class="page-wrap">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            {% block content %}{% endblock %}
+        </section>
+    </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

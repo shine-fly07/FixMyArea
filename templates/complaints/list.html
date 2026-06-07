@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}My Complaints | FixMyArea{% endblock %}
+{% block content %}
+<div class="page-title">
+    <div><h1>My Complaints</h1><p>Search, filter, sort, and track reported civic issues.</p></div>
+    <a class="btn btn-primary" href="{{ url_for('complaints.create') }}"><i class="bi bi-plus-circle"></i> Report Issue</a>
+</div>
+<form class="filter-bar" method="get">
+    <input class="form-control" name="search" placeholder="Search complaints" value="{{ request.args.get('search', '') }}">
+    <select class="form-select" name="status">
+        <option value="">All statuses</option>
+        {% for status in ['Pending','Under Review','In Progress','Resolved','Rejected'] %}
+        <option value="{{ status }}" {% if request.args.get('status') == status %}selected{% endif %}>{{ status }}</option>
+        {% endfor %}
+    </select>
+    <select class="form-select" name="category">
+        <option value="">All categories</option>
+        {% for category in categories %}
+        <option value="{{ category }}" {% if request.args.get('category') == category %}selected{% endif %}>{{ category }}</option>
+        {% endfor %}
+    </select>
+    <select class="form-select" name="sort">
+        {% for value, label in [('created_at','Newest'),('status','Status'),('priority','Priority'),('category','Category'),('location','Location')] %}
+        <option value="{{ value }}" {% if request.args.get('sort', 'created_at') == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+    </select>
+    <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
+</form>
+<div class="panel mt-3">
+    {% include "partials/complaint_table.html" %}
+    {% include "partials/pagination.html" %}
+</div>
+{% endblock %}

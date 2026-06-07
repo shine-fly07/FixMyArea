@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Manage Complaints | FixMyArea{% endblock %}
+{% block content %}
+<div class="page-title">
+    <div><h1>Manage Complaints</h1><p>Filter, prioritize, review, export, and resolve civic reports.</p></div>
+    <a class="btn btn-outline-primary" href="{{ url_for('admin.export_csv', **request.args.to_dict(flat=True)) }}"><i class="bi bi-download"></i> Export CSV</a>
+</div>
+<form class="filter-bar admin-filter" method="get">
+    <input class="form-control" name="search" placeholder="Search title, ID, citizen" value="{{ request.args.get('search', '') }}">
+    <select class="form-select" name="status"><option value="">All statuses</option>{% for status in statuses %}<option value="{{ status }}" {% if request.args.get('status') == status %}selected{% endif %}>{{ status }}</option>{% endfor %}</select>
+    <select class="form-select" name="category"><option value="">All categories</option>{% for category in categories %}<option value="{{ category }}" {% if request.args.get('category') == category %}selected{% endif %}>{{ category }}</option>{% endfor %}</select>
+    <select class="form-select" name="priority"><option value="">All priorities</option>{% for priority in priorities %}<option value="{{ priority }}" {% if request.args.get('priority') == priority %}selected{% endif %}>{{ priority }}</option>{% endfor %}</select>
+    <input class="form-control" name="location" placeholder="Location" value="{{ request.args.get('location', '') }}">
+    <input class="form-control" type="date" name="date_from" value="{{ request.args.get('date_from', '') }}">
+    <input class="form-control" type="date" name="date_to" value="{{ request.args.get('date_to', '') }}">
+    <select class="form-select" name="sort">
+        {% for value, label in [('created_at','Newest'),('status','Status'),('priority','Priority'),('category','Category'),('location','Location')] %}
+        <option value="{{ value }}" {% if request.args.get('sort', 'created_at') == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+    </select>
+    <button class="btn btn-primary" type="submit"><i class="bi bi-funnel"></i></button>
+</form>
+<div class="panel mt-3">
+    <div class="table-responsive">
+        <table class="table align-middle data-table">
+            <thead><tr><th>ID</th><th>Citizen</th><th>Title</th><th>Category</th><th>Location</th><th>Status</th><th>Priority</th><th>Date</th><th></th></tr></thead>
+            <tbody>
+            {% for complaint in complaints %}
+            <tr>
+                <td>{{ complaint.complaint_id }}</td>
+                <td>{{ complaint.user_name }}</td>
+                <td>{{ complaint.title }}</td>
+                <td>{{ complaint.category }}</td>
+                <td>{{ complaint.location }}</td>
+                <td><span class="badge status-{{ complaint.status|lower|replace(' ', '-') }}">{{ complaint.status }}</span></td>
+                <td><span class="badge priority-{{ complaint.priority|lower }}">{{ complaint.priority }}</span></td>
+                <td>{{ complaint.created_at[:10] }}</td>
+                <td class="text-end">
+                    <a class="btn btn-sm btn-outline-primary" href="{{ url_for('complaints.detail', complaint_id=complaint.id) }}">View</a>
+                    <form class="d-inline" method="post" action="{{ url_for('admin.delete_complaint', complaint_id=complaint.id) }}" data-confirm="Delete this spam complaint?">
+                        <button class="btn btn-sm btn-outline-danger" type="submit"><i class="bi bi-trash"></i></button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="9" class="text-center text-muted py-4">No complaints match these filters.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% include "partials/pagination.html" %}
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Notifications | FixMyArea{% endblock %}
+{% block content %}
+<div class="page-title"><div><h1>Notifications</h1><p>Status changes and administrative updates.</p></div></div>
+<div class="panel">
+    {% for note in notifications %}
+    <div class="notification {% if not note.is_read %}unread{% endif %}">
+        <i class="bi bi-bell"></i>
+        <div><strong>{{ note.message }}</strong><p>{{ note.created_at }}</p></div>
+    </div>
+    {% else %}
+    <p class="text-muted mb-0">No notifications yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}

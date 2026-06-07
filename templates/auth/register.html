@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Register | FixMyArea{% endblock %}
+{% block content %}
+<div class="auth-panel">
+    <h1>Create Account</h1>
+    <p class="text-muted">Start reporting and tracking issues in your area.</p>
+    <form method="post" class="vstack gap-3">
+        <div>
+            <label class="form-label">Full Name</label>
+            <input class="form-control" name="name" required>
+        </div>
+        <div>
+            <label class="form-label">Email</label>
+            <input class="form-control" type="email" name="email" required>
+        </div>
+        <div>
+            <label class="form-label">Password</label>
+            <input class="form-control" type="password" name="password" minlength="8" required>
+        </div>
+        <div>
+            <label class="form-label">Confirm Password</label>
+            <input class="form-control" type="password" name="confirm" minlength="8" required>
+        </div>
+        <button class="btn btn-primary w-100" type="submit">Register</button>
+    </form>
+    <p class="small mt-3 mb-0">Already registered? <a href="{{ url_for('auth.login') }}">Login</a></p>
+</div>
+{% endblock %}
