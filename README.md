@@ -1,6 +1,6 @@
 # FixMyArea
 
-FixMyArea is a production-ready local Civic Issue Tracker built with Flask, SQLite, Bootstrap 5, Chart.js, and vanilla JavaScript.
+FixMyArea is a local Civic Issue Tracker built with Flask, SQLite, Bootstrap 5, Chart.js, and vanilla JavaScript.
 
 ## Features
 
@@ -12,9 +12,10 @@ FixMyArea is a production-ready local Civic Issue Tracker built with Flask, SQLi
 ## Run Locally
 
 ```bash
-cd outputs/FixMyArea
+git clone https://github.com/shine-fly07/FixMyArea.git
+cd FixMyArea
 python -m venv .venv
-.venv\Scripts\activate
+.\.venv\Scripts\activate
 pip install -r requirements.txt
 python app.py
 ```
