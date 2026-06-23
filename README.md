@@ -12,12 +12,13 @@ FixMyArea is a local Civic Issue Tracker built with Flask, SQLite, Bootstrap 5, 
 ## Run Locally
 
 ```bash
+cd C:\Users\gupta\OneDrive\Desktop
+Rename-Item FixMyArea FixMyArea_old
 git clone https://github.com/shine-fly07/FixMyArea.git
 cd FixMyArea
 python -m venv .venv
-.\.venv\Scripts\activate
-pip install -r requirements.txt
-python app.py
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe app.py
 ```
 
 Open [http://127.0.0.1:5000](http://127.0.0.1:5000).
